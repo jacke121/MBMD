@@ -1173,8 +1173,10 @@ class MobileTracker(object):
         return vot.Rectangle(float(self.last_gt[1]), float(self.last_gt[0]), float(width), float(height)),confidence_score#scores[0,max_idx]
 
 
-
-handle = vot.VOT("rectangle")
+base_path=r"D:\data\vot2017\car1/"
+base_path=r"E:\git_track\Siamese-RPN\OTB2015\Crossing\img/"
+base_path=r"E:\git_track\MBMD\model\mouse/"
+handle = vot.VOT("rectangle",base_path)
 selection = handle.region()
 imagefile = handle.frame()
 if not imagefile:

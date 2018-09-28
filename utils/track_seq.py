@@ -743,11 +743,10 @@ def main(_):
 
         lengths[title_id], precisions[title_id], precisions_auc[title_id], ious[title_id] = _compile_results(gt, bBoxes_,20)
 
-        print str(title_id) + ' -- ' + titles[title_id] + \
-              ' -- Precision: ' + "%.2f" % precisions[title_id] + \
-              ' -- Precisions AUC: ' + "%.2f" % precisions_auc[title_id] + \
-              ' -- IOU: ' + "%.2f" % ious[title_id]
-        print
+        print(str(title_id) + ' -- ' + titles[title_id] +
+              ' -- Precision: ' + "%.2f" % precisions[title_id] +
+              ' -- Precisions AUC: ' + "%.2f" % precisions_auc[title_id] +
+              ' -- IOU: ' + "%.2f" % ious[title_id])
         sess.close()
 
     tot_frames = np.sum(lengths)
@@ -755,12 +754,11 @@ def main(_):
     mean_precision_auc = np.sum(precisions_auc * lengths) / tot_frames
     mean_iou = np.sum(ious * lengths) / tot_frames
     mean_speed = np.sum(speed * lengths) / tot_frames
-    print '-- Overall stats (averaged per frame) on ' + str(len(titles)) + ' videos (' + str(tot_frames) + ' frames) --'
-    print ' -- Precision ' + "(20 px)"  + ': ' + "%.2f" % mean_precision + \
-          ' -- Precisions AUC: ' + "%.2f" % mean_precision_auc + \
-          ' -- IOU: ' + "%.2f" % mean_iou + \
-          ' -- Speed: ' + "%.2f" % mean_speed + ' --'
-    print
+    print(
+        '-- Overall stats (averaged per frame) on ' + str(len(titles)) + ' videos (' + str(tot_frames) + ' frames) --')
+    print("--Precision(20 px): %.2f" % mean_precision + " -- Precisions AUC: %.2f" % mean_precision_auc +
+          ' -- IOU: ' + "%.2f" % mean_iou +
+          ' -- Speed: ' + "%.2f" % mean_speed + ' --')
 
 if __name__ == '__main__':
     tf.app.run()

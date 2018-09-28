@@ -70,7 +70,7 @@ def convert_region(region, to):
 
 class VOT(object):
     """ Base class for Python VOT integration """
-    def __init__(self, region_format):
+    def __init__(self, region_format,base_path):
         """ Constructor
 
         Args:
@@ -90,8 +90,6 @@ class VOT(object):
             self._image = str(request.image)
             self._trax.status(request.region)
         else:
-
-            base_path=r"D:\data\vot2017\car1/"
             self._files = [base_path+x.strip('\n') for x in open(base_path+'images.txt', 'r').readlines()]
             self._frame = 0
             self._region = convert_region(parse_region(open(base_path+'groundtruth.txt', 'r').readline()), region_format)
