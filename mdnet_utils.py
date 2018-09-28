@@ -64,7 +64,7 @@ def crop_image(img, bbox, img_size=107, padding=16, valid=False):
     try:
         scaled = imresize(cropped, (img_size, img_size))
     except  ValueError:
-        print "a"
+        print("a")
     return scaled
 
 def extract_regions(image,samples,crop_size=107,padding=16,shuffle=False):

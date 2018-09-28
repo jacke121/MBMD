@@ -339,8 +339,8 @@ def build_train_graph(model,model_scope, lr=1e-5, reuse=None):
 class MobileTracker(object):
     def __init__(self, image, region):
         init_training = True
-        config_file = '/home/xiaobai/Desktop/MBMD_vot_code/model/ssd_mobilenet_tracking.config'
-        checkpoint_dir = '/home/xiaobai/Desktop/MBMD_vot_code/model/dump'
+        config_file = r'E:\git_track\MBMD\model\MBMD_vot_model\model/ssd_mobilenet_tracking.config'
+        checkpoint_dir = r'E:\git_track\MBMD\model\MBMD_vot_model\model\dump'
 
         model_config, train_config, input_config, eval_config = get_configs_from_pipeline_file(config_file)
         model = build_man_model(model_config=model_config, is_training=False)
@@ -455,26 +455,26 @@ class MobileTracker(object):
         neg_regions = extract_regions(im, neg_examples)
         neg_regions = neg_regions[:, :, :, ::-1]
 
-        vggMSaver.restore(self.sess, '/home/xiaobai/Desktop/MBMD_vot_code/ckpt/VGGM/vggMParams.ckpt')
+        vggMSaver.restore(self.sess, r'E:\git_track\MBMD\model\MBMD_vot_model\ckpt\VGGM/vggMParams.ckpt')
 
         neg_features = np.zeros((5000, 3, 3, 512))
         pos_features = np.zeros((500, 3, 3, 512))
-        num_iter = 5000 / 256
+        num_iter = 5000 // 256
         for t in range(num_iter):
             neg_features[t * 256:(t + 1) * 256, :, :, :] = self.sess.run(self.featOp, feed_dict={
                 self.imageOp1: neg_regions[t * 256:(t + 1) * 256, :, :, :]})
         residual = 5000 - 256 * num_iter
-        tmp = 256 / residual + 1
+        tmp = 256 // residual + 1
         tmp1 = np.tile(neg_regions[num_iter * 256:, :, :, :], (tmp, 1, 1, 1))
         tmp1 = self.sess.run(self.featOp, feed_dict={self.imageOp1: tmp1[:256, :, :, :]})
         neg_features[num_iter * 256:, :, :, :] = tmp1[:residual, :, :, :]
 
-        num_iter = 500 / 256
+        num_iter = 500 // 256
         for t in range(num_iter):
             pos_features[t * 256:(t + 1) * 256, :, :, :] = self.sess.run(self.featOp, feed_dict={
                 self.imageOp1: pos_regions[t * 256:(t + 1) * 256, :, :, :]})
         residual = 500 - 256 * num_iter
-        tmp = 256 / residual + 1
+        tmp = 256 // residual + 1
         tmp1 = np.tile(pos_regions[num_iter * 256:, :, :, :], (tmp, 1, 1, 1))
         tmp1 = self.sess.run(self.featOp, feed_dict={self.imageOp1: tmp1[:256, :, :, :]})
         pos_features[num_iter * 256:, :, :, :] = tmp1[:residual, :, :, :]
@@ -1181,7 +1181,7 @@ if not imagefile:
     sys.exit(0)
 
 image = cv2.imread(imagefile)
-print image.shape
+print(image.shape)
 tracker = MobileTracker(image,selection)
 
 while True:

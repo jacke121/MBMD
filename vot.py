@@ -1,14 +1,3 @@
-"""
-\file vot.py
-
-@brief Python utility functions for VOT integration
-
-@author Luka Cehovin, Alessio Dore
-
-@date 2016
-
-"""
-
 import sys
 import copy
 import collections
@@ -25,11 +14,11 @@ Point = collections.namedtuple('Point', ['x', 'y'])
 Polygon = collections.namedtuple('Polygon', ['points'])
 
 def parse_region(string):
-    tokens = map(float, string.split(','))
+    tokens = list(map(float, string.split(',')))
     if len(tokens) == 4:
         return Rectangle(tokens[0], tokens[1], tokens[2], tokens[3])
     elif len(tokens) % 2 == 0 and len(tokens) > 4:
-        return Polygon([Point(tokens[i],tokens[i+1]) for i in xrange(0,len(tokens),2)])
+        return Polygon([Point(tokens[i],tokens[i+1]) for i in range(0,len(tokens),2)])
     return None
 
 def encode_region(region):
@@ -101,9 +90,12 @@ class VOT(object):
             self._image = str(request.image)
             self._trax.status(request.region)
         else:
-            self._files = [x.strip('\n') for x in open('images.txt', 'r').readlines()]
+
+            base_path=r"D:\data\vot2017\car1/"
+            self._files = [base_path+x.strip('\n') for x in open(base_path+'images.txt', 'r').readlines()]
             self._frame = 0
-            self._region = convert_region(parse_region(open('region.txt', 'r').readline()), region_format)
+            self._region = convert_region(parse_region(open(base_path+'groundtruth.txt', 'r').readline()), region_format)
+            # self._region = convert_region(parse_region(open(base_path+'region.txt', 'r').readline()), region_format)
             self._result = []
 
     def region(self):
@@ -161,13 +153,14 @@ class VOT(object):
             return self._files[self._frame]
 
     def quit(self):
-        if TRAX:
-            self._trax.quit()
-        elif hasattr(self, '_result'):
-            with open('output.txt', 'w') as f:
-                for r in self._result:
-                    f.write(encode_region(r))
-                    f.write('\n')
+        pass
+        # if TRAX:
+        #     self._trax.quit()
+        # elif hasattr(self, '_result'):
+        #     with open('output.txt', 'w') as f:
+        #         for r in self._result:
+        #             f.write(encode_region(r))
+        #             f.write('\n')
 
     def __del__(self):
         self.quit()
